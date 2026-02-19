@@ -4,9 +4,21 @@ struct Point {
     y: u64,
 }
 
+struct Dimensions {
+    width: u64,
+    height: u64,
+}
+
+struct ChangeColor(u8, u8, u8);
+
 #[derive(Debug)]
 enum Message {
     // TODO: Define the different variants used below.
+    Quit,
+    Move(Point),
+    Resize { width: u64, height: u64 },
+    ChangeColor(u8, u8, u8),
+    Echo(String),
 }
 
 impl Message {
