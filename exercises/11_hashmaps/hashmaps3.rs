@@ -31,6 +31,35 @@ fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
         // Keep in mind that goals scored by team 1 will be the number of goals
         // conceded by team 2. Similarly, goals scored by team 2 will be the
         // number of goals conceded by team 1.
+
+        /*
+            There are different methods of inserting records into a hashmap. I prefer this cause it makes sense to me.
+            You get the key of the hashmap but using the entry function. Then, depending on whether on whether the value
+            already exists or not, the modify or insert function are used. You call modify first to check if the value
+            already exists. If it does, then you update the values. If not, you insert them with or_insert function.
+        */
+
+        scores
+            .entry(team_1_name)
+            .and_modify(|e| {
+                e.goals_scored += team_1_score;
+                e.goals_conceded += team_2_score;
+            })
+            .or_insert(TeamScores {
+                goals_scored: team_1_score,
+                goals_conceded: team_2_score,
+            });
+
+        scores
+            .entry(team_2_name)
+            .and_modify(|e| {
+                e.goals_scored += team_2_score;
+                e.goals_conceded += team_1_score;
+            })
+            .or_insert(TeamScores {
+                goals_scored: team_2_score,
+                goals_conceded: team_1_score,
+            });
     }
 
     scores
@@ -54,9 +83,11 @@ England,Spain,1,0";
     fn build_scores() {
         let scores = build_scores_table(RESULTS);
 
-        assert!(["England", "France", "Germany", "Italy", "Poland", "Spain"]
-            .into_iter()
-            .all(|team_name| scores.contains_key(team_name)));
+        assert!(
+            ["England", "France", "Germany", "Italy", "Poland", "Spain"]
+                .into_iter()
+                .all(|team_name| scores.contains_key(team_name))
+        );
     }
 
     #[test]
