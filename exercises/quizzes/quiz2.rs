@@ -37,7 +37,7 @@ mod quiz_module {
         for (label, action) in input {
             match action {
                 Command::Uppercase => {
-                    // when inserting an element to the end of the vector use lenght of the vector for the index.
+                    // when inserting an element to the end of the vector use length of the vector for the index.
                     result.insert(result.len(), label.to_uppercase());
                 }
                 Command::Trim => {
