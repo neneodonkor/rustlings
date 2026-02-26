@@ -17,21 +17,65 @@
 //   the first element is the string, the second one is the command.
 // - The output element is going to be a vector of strings.
 
+use crate::quiz_module::transformer;
+
 enum Command {
     Uppercase,
     Trim,
     Append(usize),
 }
 
-mod my_module {
+mod quiz_module {
     use super::Command;
 
     // TODO: Complete the function as described above.
     // pub fn transformer(input: ???) -> ??? { ??? }
+    // ("hello".to_string(), Command::Uppercase),
+    pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
+        let mut result: Vec<String> = Vec::new();
+
+        for (label, action) in input {
+            match action {
+                Command::Uppercase => {
+                    // when inserting an element to the end of the vector use lenght of the vector for the index.
+                    result.insert(result.len(), label.to_uppercase());
+                }
+                Command::Trim => {
+                    // trim() converts label to &str so you have to convert it back to String with to_string()
+                    result.insert(result.len(), label.trim().to_string());
+                }
+                Command::Append(num) => {
+                    let mut temp = label;
+
+                    // To iterate a variable of usize you convert it into an iterator by typing 0..num
+                    for _i in 0..num {
+                        // When appending strings together, the first operand must be of type String while the second one will be of type &str.
+                        // So it will be String = String + &str
+                        temp = temp + "bar";
+                        // or temp.push_str(&label);
+                    }
+
+                    // To append to a vector, you use the insert method.
+                    result.insert(result.len(), temp.to_string());
+                }
+            }
+        }
+
+        return result;
+    }
 }
 
 fn main() {
     // You can optionally experiment here.
+    let input = vec![
+        ("hello".to_string(), Command::Uppercase),
+        (" all roads lead to rome! ".to_string(), Command::Trim),
+        ("foo".to_string(), Command::Append(1)),
+        ("bar".to_string(), Command::Append(5)),
+    ];
+
+    let output = transformer(input);
+    println!("My output is {:?}", output)
 }
 
 #[cfg(test)]
@@ -39,6 +83,7 @@ mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
     // use ???;
     use super::Command;
+    use crate::quiz_module::transformer;
 
     #[test]
     fn it_works() {
