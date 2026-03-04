@@ -6,7 +6,27 @@ fn main() {
     // TODO: Fix the compiler error by annotating the type of the vector
     // `Vec<T>`. Choose `T` as some integer type that can be created from
     // `u8` and `i8`.
-    let mut numbers = Vec::new();
+    let mut numbers: Vec<IntType> = Vec::new();
+
+    #[derive(PartialEq, Debug)]
+    enum IntType {
+        Signed(i8),
+        Unsigned(u8),
+    }
+
+    // Implement From<u8> for IntType
+    impl From<u8> for IntType {
+        fn from(num: u8) -> Self {
+            IntType::Unsigned(num)
+        }
+    }
+
+    // Implement From<i8> for IntType
+    impl From<i8> for IntType {
+        fn from(num: i8) -> Self {
+            IntType::Signed(num)
+        }
+    }
 
     // Don't change the lines below.
     let n1: u8 = 42;
